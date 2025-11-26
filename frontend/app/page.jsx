@@ -10,9 +10,9 @@ export default function Home() {
   const [city, setCity] = useState("");
   const [weather, setWeather] = useState(null);
   const [error, setError] = useState(null);
+  const [loading, setLoading] = useState(false);
 
-  const backend =
-    process.env.NEXT_PUBLIC_BACKEND_URL || "http://localhost:4000";
+  const backend = process.env.NEXT_PUBLIC_BACKEND_URL || "http://localhost:4000";
 
   const handleLogin = (tk) => {
     setToken(tk);
@@ -23,6 +23,8 @@ export default function Home() {
     e.preventDefault();
     setWeather(null);
     setError(null);
+    setLoading(true);
+    
     try {
       const res = await axios.get(`${backend}/api/weather`, {
         params: { city },
@@ -33,38 +35,76 @@ export default function Home() {
       if (err.response)
         setError(err.response.data.error || JSON.stringify(err.response.data));
       else setError(err.message);
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
-    <div
-      style={{
-        maxWidth: 800,
-        margin: "2rem auto",
-        fontFamily: "Arial, sans-serif",
-      }}
-    >
-      <h1>Weather App (Next.js + Node backend)</h1>
+    <div className="weather-container">
+      <div className="weather-wrapper">
+        <div className="weather-header">
+          <h1 className="weather-title">Weather App</h1>
+        </div>
 
-      {!token ? (
-        <LoginForm backend={backend} onSuccess={handleLogin} />
-      ) : (
-        <>
-          <p>Authenticated. Token expires in 1 hour (demo).</p>
-          <form onSubmit={lookup} style={{ marginBottom: "1rem" }}>
-            <input
-              value={city}
-              onChange={(e) => setCity(e.target.value)}
-              placeholder="City name (e.g. Addis Ababa)"
-            />
-            <button type="submit" style={{ marginLeft: 8 }}>
-              Get Weather
-            </button>
-          </form>
-          {error && <div style={{ color: "red" }}>{error}</div>}
-          {weather && <WeatherCard weather={weather} />}
-        </>
-      )}
+        {!token ? (
+          <LoginForm backend={backend} onSuccess={handleLogin} />
+        ) : (
+          <div className="weather-card">
+            <div className="auth-status">
+              <p>✅ Authenticated successfully</p>
+              <p>Token expires in 1 hour</p>
+            </div>
+
+            <form onSubmit={lookup} className="weather-form">
+              <div className="form-group">
+                <input
+                  value={city}
+                  onChange={(e) => setCity(e.target.value)}
+                  placeholder="Enter city name (e.g. Addis Ababa)"
+                  className="weather-input"
+                  required
+                />
+                <button
+                  type="submit"
+                  disabled={loading}
+                  className="weather-button"
+                >
+                  {loading ? (
+                    <div className="loading-spinner">
+                      <div className="spinner"></div>
+                      Loading...
+                    </div>
+                  ) : (
+                    "Get Weather"
+                  )}
+                </button>
+              </div>
+            </form>
+
+            {error && (
+              <div className="error-message">
+                <p className="error-title">Error:</p>
+                <p className="error-text">{error}</p>
+              </div>
+            )}
+
+            {weather && <WeatherCard weather={weather} />}
+
+            {!weather && !error && !loading && (
+              <div className="empty-state">
+                <div className="empty-icon">🌤️</div>
+                <h3 className="empty-title">
+                  Enter a city name to get weather information
+                </h3>
+                <p className="empty-subtitle">
+                  Try searching for cities like "Addis Ababa", "London", or "Tokyo"
+                </p>
+              </div>
+            )}
+          </div>
+        )}
+      </div>
     </div>
   );
 }
