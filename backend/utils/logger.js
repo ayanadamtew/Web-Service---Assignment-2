@@ -1,4 +1,4 @@
-// simple wrapper around console / winston (expandable)
+
 const { createLogger, format, transports } = require("winston");
 const logger = createLogger({
   level: "info",
@@ -10,7 +10,7 @@ const logger = createLogger({
   ),
   transports: [
     new transports.Console(),
-    // add File transports here if desired: new transports.File({ filename: 'combined.log' })
+    
   ],
 });
 

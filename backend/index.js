@@ -13,20 +13,20 @@ const PORT = process.env.PORT || 4000;
 
 app.use(cors());
 app.use(express.json());
-app.use(morgan("tiny")); // logs incoming requests to console
+app.use(morgan("tiny")); 
 
-// simple health endpoint
+
 app.get("/health", (req, res) =>
   res.json({ status: "ok", time: new Date().toISOString() })
 );
 
-// auth routes
+
 app.use("/auth", authRoutes);
 
-// protected weather route - requires JWT
+
 app.use("/api/weather", authMiddleware, weatherRoutes);
 
-// docs route – small JSON documenting endpoints (helpful for assignment)
+
 app.get("/api/docs", (req, res) => {
   res.json({
     endpoints: [
@@ -47,7 +47,7 @@ app.get("/api/docs", (req, res) => {
   });
 });
 
-// global error handler
+
 app.use(errorHandler);
 
 app.listen(PORT, () => {

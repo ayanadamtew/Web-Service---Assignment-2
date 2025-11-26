@@ -3,7 +3,7 @@ const axios = require("axios");
 const router = express.Router();
 const logger = require("../utils/logger");
 
-// Data transformation helper
+
 function transformOpenWeatherResponse(data) {
   const kmsToKph = (mps) => Number((mps * 3.6).toFixed(2));
   const kelvinToC = (k) => Number((k - 273.15).toFixed(2));
@@ -19,11 +19,11 @@ function transformOpenWeatherResponse(data) {
     windKph: kmsToKph(data.wind.speed),
     sunrise: data.sys ? new Date(data.sys.sunrise * 1000).toISOString() : null,
     sunset: data.sys ? new Date(data.sys.sunset * 1000).toISOString() : null,
-    raw: data, // include raw for debugging / screenshots
+    raw: data, 
   };
 }
 
-// GET /api/weather?city=Addis Ababa
+
 router.get("/", async (req, res, next) => {
   try {
     const city = req.query.city;
@@ -32,7 +32,7 @@ router.get("/", async (req, res, next) => {
         .status(400)
         .json({ error: "city query parameter is required" });
 
-    // Use OpenWeatherMap current weather endpoint
+  
     const apiKey = process.env.WEATHER_API_KEY;
     if (!apiKey)
       return res
@@ -46,7 +46,7 @@ router.get("/", async (req, res, next) => {
     const transformed = transformOpenWeatherResponse(resp.data);
     res.json({ success: true, data: transformed });
   } catch (err) {
-    // Propagate details for non-200 external responses
+    
     if (err.response) {
       logger.error(
         `External API error: ${err.response.status} ${err.response.data}`
