@@ -6,10 +6,10 @@ export default function LoginForm({
   onSuccess,
 }) {
   const [username, setUsername] = useState(
-    process.env.DEMO_USERNAME || "student"
+    process.env.DEMO_USERNAME = "student"
   );
   const [password, setPassword] = useState(
-    process.env.DEMO_PASSWORD || "password123"
+    process.env.DEMO_PASSWORD = "password123"
   );
   const [loading, setLoading] = useState(false);
   const [err, setErr] = useState(null);
@@ -46,7 +46,6 @@ export default function LoginForm({
               className="form-input"
               value={username}
               onChange={(e) => setUsername(e.target.value)}
-              placeholder="Enter your username"
             />
           </div>
           
@@ -57,7 +56,6 @@ export default function LoginForm({
               type="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              placeholder="Enter your password"
             />
           </div>
         </div>
@@ -73,7 +71,7 @@ export default function LoginForm({
               Signing in...
             </div>
           ) : (
-            "Sign In"
+            "Log in"
           )}
         </button>
 
@@ -84,15 +82,7 @@ export default function LoginForm({
         )}
       </form>
 
-      <div className="login-demo-note">
-        <p><strong>Demo Credentials:</strong></p>
-        <p>
-          Username: <span className="demo-credentials">{username}</span>
-        </p>
-        <p>
-          Password: <span className="demo-credentials">{password}</span>
-        </p>
-      </div>
+      
     </div>
   );
 }

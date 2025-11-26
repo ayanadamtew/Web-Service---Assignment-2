@@ -3,7 +3,6 @@ const jwt = require("jsonwebtoken");
 const router = express.Router();
 const logger = require("../utils/logger");
 
-// Demo credential (for assignment/demo). In real app, use DB and hashed passwords.
 const DEMO_USER = {
   username: "student",
   password: "password123",
