@@ -32,23 +32,67 @@ export default function LoginForm({
   };
 
   return (
-    <form onSubmit={login} style={{ marginBottom: "1rem" }}>
-      <div>
-        <label>Username: </label>
-        <input value={username} onChange={(e) => setUsername(e.target.value)} />
+    <div className="login-form">
+      <div className="login-header">
+        <h2 className="login-title">Welcome Back</h2>
+        <p className="login-subtitle">Sign in to access weather data</p>
       </div>
-      <div>
-        <label>Password: </label>
-        <input
-          type="password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-        />
+
+      <form onSubmit={login}>
+        <div className="form-group">
+          <div className="form-row">
+            <label className="form-label">Username</label>
+            <input
+              className="form-input"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+              placeholder="Enter your username"
+            />
+          </div>
+          
+          <div className="form-row">
+            <label className="form-label">Password</label>
+            <input
+              className="form-input"
+              type="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              placeholder="Enter your password"
+            />
+          </div>
+        </div>
+
+        <button 
+          className="login-button" 
+          disabled={loading} 
+          type="submit"
+        >
+          {loading ? (
+            <div className="loading-spinner">
+              <div className="spinner"></div>
+              Signing in...
+            </div>
+          ) : (
+            "Sign In"
+          )}
+        </button>
+
+        {err && (
+          <div className="login-error">
+            <p className="login-error-text">{err}</p>
+          </div>
+        )}
+      </form>
+
+      <div className="login-demo-note">
+        <p><strong>Demo Credentials:</strong></p>
+        <p>
+          Username: <span className="demo-credentials">{username}</span>
+        </p>
+        <p>
+          Password: <span className="demo-credentials">{password}</span>
+        </p>
       </div>
-      <button disabled={loading} type="submit">
-        Log in
-      </button>
-      {err && <div style={{ color: "red" }}>{err}</div>}
-    </form>
+    </div>
   );
 }
