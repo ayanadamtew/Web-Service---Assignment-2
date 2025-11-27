@@ -19,6 +19,13 @@ export default function Home() {
     setError(null);
   };
 
+  const handleLogout = () => {
+    setToken(null);
+    setWeather(null);
+    setError(null);
+    setCity('');
+  };
+
   const lookup = async (e) => {
     e.preventDefault();
     setWeather(null);
@@ -51,9 +58,19 @@ export default function Home() {
           <LoginForm backend={backend} onSuccess={handleLogin} />
         ) : (
           <div className="weather-card">
-            <div className="auth-status">
-              <p>✅ Authenticated successfully</p>
-              <p>Token expires in 1 hour</p>
+            <div className="auth-status">  
+                <div>      
+                  <p>✅ Authenticated successfully</p>
+                  <p>Token expires in 1 hour</p>
+                </div>
+                <div>
+                <button 
+                  onClick={handleLogout}
+                  className="logout-button"
+                >
+                  Logout
+                </button>
+                </div>
             </div>
 
             <form onSubmit={lookup} className="weather-form">
